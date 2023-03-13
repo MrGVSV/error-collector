@@ -1,12 +1,12 @@
 [package]
-name = "error-collector"
+name = "optional-error"
 version = "0.1.0"
 edition = "2021"
 authors = ["Gino Valente <gino.valente.code@gmail.com>"]
-description = "Simple crate to combine Option<syn::Error> more easily"
-repository = "https://github.com/MrGVSV/error-collector"
+description = "Simple crate to more easily work with an optional syn::Error"
+repository = "https://github.com/MrGVSV/optional-error"
 license = "MIT OR Apache-2.0"
-keywords = ["proc", "macro", "error", "syn", "collector"]
+keywords = ["proc", "macro", "optional", "error", "syn"]
 categories = ["development-tools::procedural-macro-helpers"]
 readme = "README.md"
 exclude = [".github/**/*"]

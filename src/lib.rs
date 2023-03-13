@@ -1,29 +1,39 @@
 use syn::Error;
 
+/// Represents an `Option<syn::Error>`.
 #[derive(Default)]
-pub struct ErrorCollector(Option<Error>);
+pub struct OptionalError(Option<Error>);
 
-impl ErrorCollector {
+impl OptionalError {
+    /// Create a new [`OptionalError`] with the given [error](Error).
     pub fn new(error: Error) -> Self {
         Self(Some(error))
     }
 
+    /// Returns a reference to the contained [error](Error), if any.
     pub fn error(&self) -> Option<&Error> {
         self.0.as_ref()
     }
 
+    /// Returns a mutable reference to the contained [error](Error), if any.
     pub fn error_mut(&mut self) -> Option<&mut Error> {
         self.0.as_mut()
     }
 
+    /// Removes the contained [error](Error) and returns it, if any.
     pub fn take(&mut self) -> Option<Error> {
         self.0.take()
     }
 
+    /// Replaces the contained [error](Error) with the given one.
+    ///
+    /// Returns the previous error, if any.
     pub fn replace(&mut self, error: Error) -> Option<Error> {
         self.0.replace(error)
     }
 
+    /// Combine the given [error](Error) with the existing one,
+    /// initializing it if none currently exists.
     pub fn combine(&mut self, error: Error) {
         match self.0 {
             None => self.0 = Some(error),
@@ -31,6 +41,9 @@ impl ErrorCollector {
         }
     }
 
+    /// Returns a [`Result`] with the contained [error](Error), if any.
+    ///
+    /// This can be used for quick and easy early returns.
     pub fn try_throw(self) -> Result<(), Error> {
         match self.0 {
             None => Ok(()),
@@ -46,7 +59,7 @@ mod tests {
 
     #[test]
     fn should_combine() {
-        let mut collector = ErrorCollector::new(Error::new(Span::call_site(), "First Error"));
+        let mut collector = OptionalError::new(Error::new(Span::call_site(), "First Error"));
         collector.combine(Error::new(Span::call_site(), "Second Error"));
 
         let expected = r#"compile_error ! { "First Error" } compile_error ! { "Second Error" }"#;
@@ -56,7 +69,7 @@ mod tests {
 
     #[test]
     fn should_replace() {
-        let mut collector = ErrorCollector::new(Error::new(Span::call_site(), "First Error"));
+        let mut collector = OptionalError::new(Error::new(Span::call_site(), "First Error"));
         let existing = collector.replace(Error::new(Span::call_site(), "Second Error"));
 
         let expected = r#"compile_error ! { "First Error" }"#;
@@ -70,7 +83,7 @@ mod tests {
 
     #[test]
     fn should_take() {
-        let mut collector = ErrorCollector::new(Error::new(Span::call_site(), "First Error"));
+        let mut collector = OptionalError::new(Error::new(Span::call_site(), "First Error"));
         let existing = collector.take();
 
         let expected = r#"compile_error ! { "First Error" }"#;
