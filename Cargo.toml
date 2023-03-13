@@ -1,6 +1,6 @@
 [package]
 name = "optional-error"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["Gino Valente <gino.valente.code@gmail.com>"]
 description = "Simple crate to more easily work with an optional syn::Error"
