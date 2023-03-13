@@ -1,0 +1,15 @@
+[package]
+name = "error-collector"
+version = "0.1.0"
+edition = "2021"
+authors = ["Gino Valente <gino.valente.code@gmail.com>"]
+description = "Simple crate to combine Option<syn::Error> more easily"
+repository = "https://github.com/MrGVSV/error-collector"
+license = "MIT OR Apache-2.0"
+keywords = ["proc", "macro", "error", "syn", "collector"]
+categories = ["development-tools::procedural-macro-helpers"]
+readme = "README.md"
+exclude = [".github/**/*"]
+
+[dependencies]
+syn = { version = "1.0", default-features = false }
